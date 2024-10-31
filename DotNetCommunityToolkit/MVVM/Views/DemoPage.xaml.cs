@@ -1,3 +1,5 @@
+using DotNetCommunityToolkit.MVVM.ViewModels;
+
 namespace DotNetCommunityToolkit.MVVM.Views;
 
 public partial class DemoPage : ContentPage
