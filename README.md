@@ -238,7 +238,7 @@ Here are some references to help you learn more about the .NET Community Toolkit
 
 - [Official .NET Community Toolkit Documentation](https://learn.microsoft.com/en-us/dotnet/communitytoolkit/)
 - [GitHub - .NET Community Toolkit](https://github.com/CommunityToolkit/dotnet)
-- [Microsoft Learn - ObservableCollection Class]([https://learn.microsoft.com/en-us/dotnet/api/system.collections.objectmodel.observablecollection](https://learn.microsoft.com/en-us/dotnet/api/system.collections.objectmodel.observablecollection-1?view=net-8.0))
+- [Microsoft Learn - ObservableCollection Class](https://learn.microsoft.com/en-us/dotnet/api/system.collections.objectmodel.observablecollection-1?view=net-8.0)
 
 ---
 
