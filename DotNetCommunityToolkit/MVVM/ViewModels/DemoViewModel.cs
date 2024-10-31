@@ -6,10 +6,17 @@ using DotNetCommunityToolkit.MVVM.Models;
 namespace DotNetCommunityToolkit.MVVM.ViewModels
 {
 
-    public class DemoViewModel : ObservableObject
+    public partial class DemoViewModel : ObservableObject
     {
+        [ObservableProperty]
+        private string _password;
         public FakePerson Person { get; set; }
-        public string Password { get; set; }
+
+        /*public string Password
+        {
+            get => _password;
+            set => _password = value;
+        }*/
 
         public ICommand GenerateData =>
              new Command(() =>

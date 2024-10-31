@@ -7,11 +7,21 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace DotNetCommunityToolkit.MVVM.Models
 {
-    public class FakePerson : ObservableObject
+    public partial class FakePerson : ObservableObject
     {
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(FullName))]
         private string _firstName;
 
-        public string FirstName
+        [ObservableProperty]
+        private string _lastName;
+
+        partial void OnFirstNameChanged(string value)
+        {
+            Console.WriteLine(value);
+        }
+
+        /*public string FirstName
         {
             get => _firstName;
             set
@@ -19,9 +29,18 @@ namespace DotNetCommunityToolkit.MVVM.Models
                 //_firstName = value;
                 SetProperty(ref _firstName, value);
             }
-        }
+        }*/
 
-        public string LastName { get; set; }
+        /*public string LastName
+        {
+            get => _lastName;
+            set
+            {
+                //_lastName = value;
+                SetProperty(ref _lastName, value);
+            }
+        }*/
+
         public string FullName
         {
             get
