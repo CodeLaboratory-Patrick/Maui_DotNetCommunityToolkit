@@ -337,6 +337,102 @@ Here are some references to help you learn more about `ObservableObject` and MVV
 - [GitHub - .NET Community Toolkit](https://github.com/CommunityToolkit/dotnet)
 - [Microsoft Learn - MVVM Pattern](https://learn.microsoft.com/en-us/xamarin/xamarin-forms/enterprise-application-patterns/mvvm)
 ---
+# MVVM Toolkit - ObservableProperty
+
+The **MVVM Toolkit** is a part of the .NET Community Toolkit, and one of its powerful features is the **`[ObservableProperty]`** attribute. This attribute is designed to simplify property creation in view models, enabling easy data binding between the view and the underlying data. It significantly reduces the boilerplate code required to implement **INotifyPropertyChanged**, which is essential in the **MVVM (Model-View-ViewModel)** design pattern for updating UI elements automatically when underlying property values change.
+
+In this guide, we will explore what `ObservableProperty` is, its features, how to use it with examples, and when it should be applied in your projects.
+
+## What is `ObservableProperty`?
+
+The **`[ObservableProperty]`** attribute is part of the **CommunityToolkit.Mvvm.ComponentModel** namespace and is used to generate properties that notify changes automatically. When you apply `[ObservableProperty]` to a private field in a view model, it automatically creates a corresponding public property with change notification. This feature makes it easier to work with **INotifyPropertyChanged** without having to write repetitive property-getter-setter code and manually invoke `OnPropertyChanged()`.
+
+### Key Features of `ObservableProperty`
+
+- **Automatic Property Creation**: The attribute generates both a property and the necessary change notification.
+- **Integrated Change Notification**: Implements **INotifyPropertyChanged** automatically, ensuring seamless data binding in MVVM.
+- **Cleaner Code**: Reduces the amount of boilerplate code, making the view model code more readable and maintainable.
+
+## Example: Using `ObservableProperty`
+The following example demonstrates how to use `[ObservableProperty]` to define observable properties in a view model.
+
+```csharp
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using System.Threading.Tasks;
+
+public partial class ProductViewModel : ObservableObject
+{
+    [ObservableProperty]
+    private string productName;
+
+    [ObservableProperty]
+    private decimal price;
+
+    public ProductViewModel()
+    {
+        ProductName = "Laptop";
+        Price = 999.99m;
+    }
+
+    [ICommand]
+    public async Task UpdateProductNameAsync()
+    {
+        await Task.Delay(1000);
+        ProductName = "Gaming Laptop";
+    }
+}
+```
+
+### Explanation
+- **`[ObservableProperty]` Attribute**: This attribute is used on private fields (`productName` and `price`) to generate public properties (`ProductName` and `Price`) along with the change notification logic. You no longer need to manually write property setters or call `OnPropertyChanged()`.
+- **Automatic Code Generation**: The toolkit automatically generates the boilerplate code required for properties and updates, simplifying the view model.
+- **Command Example**: The `[ICommand]` attribute is used to create a command (`UpdateProductNameAsync`) that can be bound to UI actions like button clicks, updating the `ProductName` property after a delay.
+
+### Generated Code Equivalent
+Using `[ObservableProperty]` eliminates the need to write the following repetitive code for each property:
+
+```csharp
+private string productName;
+public string ProductName
+{
+    get => productName;
+    set
+    {
+        if (productName != value)
+        {
+            productName = value;
+            OnPropertyChanged();
+        }
+    }
+}
+```
+The `[ObservableProperty]` attribute effectively performs the same function automatically.
+
+## When to Use `ObservableProperty`?
+
+| Scenario                            | Description                                                                                 |
+|-------------------------------------|---------------------------------------------------------------------------------------------|
+| **MVVM-Based Application**          | Ideal for view models in applications using the MVVM pattern to keep UI and business logic separate. |
+| **Reducing Boilerplate Code**       | Use `[ObservableProperty]` to minimize repetitive code, especially for properties requiring frequent change notifications.   |
+| **Reactive User Interfaces**        | Helps build applications that need reactive UI elements which update dynamically when underlying data changes. |
+| **Improving Code Maintainability**  | Makes view models easier to maintain and reduces the potential for errors in manual property implementations. |
+
+### Pros and Cons of Using `[ObservableProperty]`
+
+| Pros                                         | Cons                                                              |
+|----------------------------------------------|-------------------------------------------------------------------|
+| **Reduces Boilerplate**: Automatic property creation reduces repetitive code. | **Dependency on Toolkit**: Requires adding a dependency on the CommunityToolkit.Mvvm library. |
+| **Automatic INotifyPropertyChanged**: Simplifies data-binding by implementing property change notifications. | **Less Control**: Automatically generated properties may limit control for specific custom behaviors. |
+| **Cleaner and More Readable Code**: Improves the readability and maintainability of view models. | **Learning Curve**: Developers unfamiliar with the toolkit may need time to understand how it works. |
+
+## Resources for Further Reading
+Here are some references to help you learn more about `ObservableProperty` and the MVVM pattern in .NET applications:
+
+- [Official .NET Community Toolkit Documentation](https://learn.microsoft.com/en-us/dotnet/communitytoolkit/mvvm/observableproperty)
+- [GitHub - .NET Community Toolkit](https://github.com/CommunityToolkit/dotnet)
+- [Microsoft Learn - MVVM Pattern](https://learn.microsoft.com/en-us/xamarin/xamarin-forms/enterprise-application-patterns/mvvm)
+---
 
 .Net MAUI Community Toolkit
 1. Alerts : Snackbar / Toast
