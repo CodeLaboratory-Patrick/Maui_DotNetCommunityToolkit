@@ -1,11 +1,12 @@
 ﻿using System.Windows.Input;
 using Bogus;
+using CommunityToolkit.Mvvm.ComponentModel;
 using DotNetCommunityToolkit.MVVM.Models;
 
 namespace DotNetCommunityToolkit.MVVM.ViewModels
 {
 
-    public class DemoViewModel
+    public class DemoViewModel : ObservableObject
     {
         public FakePerson Person { get; set; }
         public string Password { get; set; }
