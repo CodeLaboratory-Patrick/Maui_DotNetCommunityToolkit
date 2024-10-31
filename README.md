@@ -433,6 +433,122 @@ Here are some references to help you learn more about `ObservableProperty` and t
 - [GitHub - .NET Community Toolkit](https://github.com/CommunityToolkit/dotnet)
 - [Microsoft Learn - MVVM Pattern](https://learn.microsoft.com/en-us/xamarin/xamarin-forms/enterprise-application-patterns/mvvm)
 ---
+# MVVM Toolkit - RelayCommand
+
+The **MVVM Toolkit** is a part of the .NET Community Toolkit, and it includes the powerful **`RelayCommand`** class, which is used to simplify command binding in the **Model-View-ViewModel (MVVM)** design pattern. `RelayCommand` is particularly useful for handling user interactions, such as button clicks, within your applications while maintaining separation between UI logic and business logic.
+
+In this guide, we will discuss what `RelayCommand` is, its features, how to use it with examples, and when it should be applied in your projects.
+
+## What is `RelayCommand`?
+
+**`RelayCommand`** is a type of command that is used in **MVVM** applications to facilitate communication between the View and the ViewModel. It is part of the **CommunityToolkit.Mvvm.Input** namespace and provides a straightforward way to create commands without the need to implement **ICommand** manually. `RelayCommand` helps to invoke methods when users interact with UI elements such as buttons, while adhering to the principles of MVVM.
+
+### Key Features of `RelayCommand`
+
+- **Implements ICommand Interface**: `RelayCommand` fully implements the **ICommand** interface, which allows it to be bound to UI elements.
+- **Simplified Command Creation**: Makes creating commands quick and easy by reducing boilerplate code.
+- **Supports CanExecute Logic**: Allows you to control whether a command can execute, enabling or disabling UI elements dynamically.
+- **Async Support**: Supports asynchronous operations, making it easier to work with commands that require background processing.
+
+## Example: Using `RelayCommand` in a ViewModel
+Below is an example of how to use `RelayCommand` to handle user interactions in a ViewModel.
+
+### Step-by-Step Example
+```csharp
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using System;
+using System.Threading.Tasks;
+
+public partial class OrderViewModel : ObservableObject
+{
+    [ObservableProperty]
+    private string orderStatus;
+
+    public OrderViewModel()
+    {
+        OrderStatus = "Awaiting Order";
+    }
+
+    [ICommand]
+    public async Task PlaceOrderAsync()
+    {
+        OrderStatus = "Placing Order...";
+        await Task.Delay(2000); // Simulate order processing delay
+        OrderStatus = "Order Placed Successfully!";
+    }
+
+    [RelayCommand(CanExecute = nameof(CanCancelOrder))]
+    private void CancelOrder()
+    {
+        OrderStatus = "Order Cancelled";
+    }
+
+    private bool CanCancelOrder()
+    {
+        return OrderStatus == "Placing Order...";
+    }
+}
+```
+
+### Explanation
+- **`[ICommand]` Attribute**: The `PlaceOrderAsync` method is decorated with the `[ICommand]` attribute, which converts it into an asynchronous command that can be easily bound to the UI.
+- **`RelayCommand` with `CanExecute`**: The `CancelOrder` method uses `RelayCommand` with a **CanExecute** method (`CanCancelOrder`). This controls whether the `CancelOrder` command can execute, thereby enabling or disabling the related UI element (e.g., a button).
+- **Async Commands**: The `PlaceOrderAsync` method runs asynchronously, ensuring that the UI remains responsive during order placement.
+
+## Benefits of Using `RelayCommand`
+
+### Simplifies Command Binding
+`RelayCommand` eliminates the need to manually implement **ICommand** for every command. It generates the necessary infrastructure automatically, reducing boilerplate code and allowing developers to focus on application logic.
+
+### Example of Manual Command Implementation
+Without `RelayCommand`, developers would need to manually implement commands like this:
+
+```csharp
+public class ManualCommand : ICommand
+{
+    private readonly Action _execute;
+    private readonly Func<bool> _canExecute;
+
+    public ManualCommand(Action execute, Func<bool> canExecute = null)
+    {
+        _execute = execute;
+        _canExecute = canExecute;
+    }
+
+    public bool CanExecute(object parameter) => _canExecute == null || _canExecute();
+
+    public void Execute(object parameter) => _execute();
+
+    public event EventHandler CanExecuteChanged;
+}
+```
+Using `RelayCommand` avoids this complexity by providing a simple way to create and manage commands.
+
+## When to Use `RelayCommand`?
+
+| Scenario                           | Description                                                                                 |
+|------------------------------------|---------------------------------------------------------------------------------------------|
+| **Handling User Actions**          | Use `RelayCommand` to easily handle UI actions like button clicks in MVVM applications.     |
+| **Async Operations**               | Ideal for long-running operations where UI responsiveness must be maintained (e.g., data fetching, file uploads). |
+| **Enabling/Disabling Controls**    | Use the `CanExecute` feature of `RelayCommand` to dynamically enable or disable UI elements based on application state. |
+| **MVVM Command Binding**           | Perfect for creating commands in view models to maintain separation between UI and logic.    |
+
+### Pros and Cons of Using `RelayCommand`
+
+| Pros                                         | Cons                                                              |
+|----------------------------------------------|-------------------------------------------------------------------|
+| **Simplifies ICommand Implementation**: Saves time by reducing repetitive boilerplate code. | **Requires Toolkit Dependency**: Adds dependency on the CommunityToolkit.Mvvm library. |
+| **CanExecute Logic Support**: Provides a way to enable/disable UI elements dynamically. | **Limited Flexibility**: For highly customized command scenarios, manual ICommand implementations may offer more control. |
+| **Built-in Async Support**: Supports asynchronous operations easily, keeping the UI responsive. | **Learning Curve**: Requires understanding of the MVVM pattern and how command binding works. |
+
+## Resources for Further Reading
+Here are some references to help you learn more about `RelayCommand` and how to use it effectively in .NET applications:
+
+- [Official .NET Community Toolkit Documentation](https://learn.microsoft.com/en-us/dotnet/communitytoolkit/mvvm/relaycommand)
+- [GitHub - .NET Community Toolkit](https://github.com/CommunityToolkit/dotnet)
+- [Microsoft Learn - Commands in MVVM](https://learn.microsoft.com/en-us/xamarin/xamarin-forms/enterprise-application-patterns/mvvm#commands)
+---
 
 .Net MAUI Community Toolkit
 1. Alerts : Snackbar / Toast
