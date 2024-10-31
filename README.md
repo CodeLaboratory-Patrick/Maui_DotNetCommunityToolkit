@@ -241,6 +241,102 @@ Here are some references to help you learn more about the .NET Community Toolkit
 - [Microsoft Learn - ObservableCollection Class](https://learn.microsoft.com/en-us/dotnet/api/system.collections.objectmodel.observablecollection-1?view=net-8.0)
 
 ---
+# MVVM Toolkit - ObservableObject
+
+The **MVVM Toolkit** is a part of the .NET Community Toolkit, specifically designed to simplify the implementation of the **Model-View-ViewModel (MVVM)** design pattern in .NET applications. One of the key components of this toolkit is the **`ObservableObject`** class. `ObservableObject` provides a base implementation that significantly reduces boilerplate code required for implementing data-binding properties, making it easier to develop reactive user interfaces.
+
+In this guide, we will discuss what `ObservableObject` is, its features, how it can be used with detailed examples, and when it should be applied in your projects.
+
+## What is `ObservableObject`?
+
+**`ObservableObject`** is a base class provided by the **CommunityToolkit.Mvvm.ComponentModel** namespace. It is used as part of the MVVM design pattern to implement properties that notify the view when their values change. `ObservableObject` implements the **INotifyPropertyChanged** interface, which is essential for data binding in MVVM, as it allows UI elements to be updated when the underlying data changes.
+
+### Key Features of `ObservableObject`
+
+- **Implements INotifyPropertyChanged**: This interface allows properties in the view model to notify the UI when their values change.
+- **Reduces Boilerplate Code**: The `ObservableObject` class, combined with attributes like `[ObservableProperty]`, eliminates the need to manually implement property change notifications.
+- **Supports MVVM Pattern**: `ObservableObject` is specifically designed to work seamlessly with MVVM, which separates UI logic from business logic.
+
+## Example: Creating an Observable Property
+Below is an example of how to use `ObservableObject` to create a view model that notifies the UI whenever a property value changes.
+
+### Step-by-Step Example
+```csharp
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using System.Threading.Tasks;
+
+public partial class UserProfileViewModel : ObservableObject
+{
+    [ObservableProperty]
+    private string userName;
+
+    [ObservableProperty]
+    private int age;
+
+    public UserProfileViewModel()
+    {
+        UserName = "John Doe";
+        Age = 25;
+    }
+
+    [ICommand]
+    public async Task UpdateUserNameAsync()
+    {
+        await Task.Delay(1000);
+        UserName = "Jane Doe";
+    }
+}
+```
+
+### Explanation
+- **`ObservableObject` Base Class**: The `UserProfileViewModel` class inherits from `ObservableObject`, which provides the necessary infrastructure for notifying property changes.
+- **`[ObservableProperty]` Attribute**: This attribute is used to define a property (`userName` and `age`). It automatically generates a public property and the logic for property change notifications. Instead of manually implementing getters, setters, and calling `OnPropertyChanged()`, you only need to declare the private field.
+- **`[ICommand]` Attribute**: Generates a command from the `UpdateUserNameAsync` method, making it easy to bind to a button in the UI.
+
+### Generated Code Equivalent
+Using the `[ObservableProperty]` attribute eliminates the need to write the following boilerplate code for each property:
+
+```csharp
+private string userName;
+public string UserName
+{
+    get => userName;
+    set
+    {
+        if (userName != value)
+        {
+            userName = value;
+            OnPropertyChanged();
+        }
+    }
+}
+```
+This reduction in repetitive code makes it easier and quicker to develop view models.
+
+## When to Use `ObservableObject`?
+
+| Scenario                            | Description                                                                                 |
+|-------------------------------------|---------------------------------------------------------------------------------------------|
+| **Developing MVVM Applications**    | Use `ObservableObject` as the base class for view models to simplify data binding logic.     |
+| **Eliminating Boilerplate Code**    | Use `[ObservableProperty]` to generate properties with change notifications automatically.   |
+| **Building Reactive User Interfaces** | When your UI needs to react to changes in data, `ObservableObject` helps in implementing those bindings effectively. |
+
+### Pros and Cons of Using `ObservableObject`
+
+| Pros                                         | Cons                                                              |
+|----------------------------------------------|-------------------------------------------------------------------|
+| **Reduces Code Complexity**: Eliminates repetitive boilerplate code. | **Limited Use Outside MVVM**: Primarily useful for MVVM patterns.  |
+| **Simplifies Property Management**: Easy to define and manage properties. | **Requires Attribute Knowledge**: Developers need to learn specific attributes like `[ObservableProperty]`. |
+| **Built-in Change Notification**: Implements `INotifyPropertyChanged` by default. | **Dependency**: Relies on `CommunityToolkit.Mvvm`, adding an external dependency. |
+
+## Resources for Further Reading
+Here are some references to help you learn more about `ObservableObject` and MVVM in .NET applications:
+
+- [Official .NET Community Toolkit Documentation](https://learn.microsoft.com/en-us/dotnet/communitytoolkit/mvvm/observableobject)
+- [GitHub - .NET Community Toolkit](https://github.com/CommunityToolkit/dotnet)
+- [Microsoft Learn - MVVM Pattern](https://learn.microsoft.com/en-us/xamarin/xamarin-forms/enterprise-application-patterns/mvvm)
+---
 
 .Net MAUI Community Toolkit
 1. Alerts : Snackbar / Toast
